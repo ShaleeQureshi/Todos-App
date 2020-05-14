@@ -1,13 +1,8 @@
 package com.example.todoapp.AddTodo;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,13 +12,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.todoapp.R;
-
 import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.todoapp.Methods.FileAccess.*;
 
@@ -36,14 +26,12 @@ Description: This class creates the Todos and puts them onto a list starting at 
 class AddTodoLogic {
 
     //Constructor
-    AddTodoLogic(Button addButton, FloatingActionButton btnDelete, EditText textValue, final ListView listView, final Context context, final int year, final int month, final int day, final int hour, final int minute) {
+    AddTodoLogic(Button addButton, FloatingActionButton btnDelete, final EditText textValue, final ListView listView, final Context context, final int year, final int month, final int day, final int hour, final int minute) {
 
         final File fileAll = new File(context.getFilesDir(), "alltodos.txt"); //File path to internal storage
         final File fileTodos = new File(context.getFilesDir(), "todo.txt");
 
-        final String ampm;
-
-        final List<String> list = new ArrayList<>(); //ArrayList for the list of Todos
+        final ArrayList<String> list = new ArrayList<>(); //ArrayList for the list of Todos
 
         ArrayList<String> data = new ArrayList<>(); //ArrayList for previously added data
 
@@ -57,14 +45,6 @@ class AddTodoLogic {
         alert.setMessage("Please add a Todo\n\nFor Example:\n\nWalk the dog\nGo for a run\nCode a Todos App");
         alert.setPositiveButton("OK", null);
 
-        list.add("");
-
-        if (hour >= 12) {
-            ampm = "PM";
-        } else {
-            ampm = "AM";
-        }
-
         //If the file exists it means the user has used the app before so we will get the todos from before and display them
         if (fileTodos.exists()) {
             data = readFile(data, fileTodos);
@@ -72,19 +52,19 @@ class AddTodoLogic {
             list.addAll(data);
         }
 
-        final EditText finalTextValue = textValue; //Temp final variable
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if (finalTextValue.getText().length() == 0 || (finalTextValue.getText().toString().replaceAll(" ", "")).equals("")) {
+                if (textValue.getText().length() == 0 || (textValue.getText().toString().replaceAll(" ", "")).equals("")) {
                     alert.show();
-                    finalTextValue.setText("");
+                    textValue.setText("");
                 } else {
 
-                    String output = finalTextValue.getText().toString() + "     For: " + year + "-" + month + "-" + day + " AT " + hour + ":" + minute + ampm;
+                    String output = textValue.getText().toString() + "     For: " + year + "-" + month + "-" + day + " AT " + hour + ":" + minute;
 
 
                     writeFile(output, fileTodos, true);
@@ -93,7 +73,7 @@ class AddTodoLogic {
                     list.add(output);
                     listAdapter.notifyDataSetChanged();
 
-                    finalTextValue.setText("");
+                    textValue.setText("");
                 }
 
             }//onClick Method
@@ -103,11 +83,6 @@ class AddTodoLogic {
             @Override
             public void onClick(View v) {
 
-                ArrayList<String> updatedList = new ArrayList<>();
-                ArrayList<String> completedList = new ArrayList<>();
-
-
-                int items = listView.getCount();
 
                 SparseBooleanArray checkedItemsCheck = listView.getCheckedItemPositions();
 
@@ -117,23 +92,19 @@ class AddTodoLogic {
 
                     SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
 
-                    for (int i = 0; i < items; i++) {
-                        if (!checkedItems.get(i) && !list.get(i).equals("")) {
-                            updatedList.add(list.get(i));
-                        } else {
-                            completedList.add(list.get(i) + " - Completed");
+                    for (int i = 0; i < listView.getCount(); i++) {
+                        if (checkedItems.get(i)) {
+                            writeFile(list.get(i) + " - Completed", fileAll, true);
+                            list.remove(list.get(i));
                         }
+
 
                     }
 
-                    ArrayAdapter<String> newList = new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice, updatedList);
+                    listAdapter.notifyDataSetChanged();
+                    Toast toast = Toast.makeText(context, "Item(s) deleted successfully!", Toast.LENGTH_SHORT);
+                    toast.show();
 
-                    listView.setAdapter(newList);
-                    newList.notifyDataSetChanged();
-
-                    writeFileArray(updatedList, fileTodos);
-                    writeFileArray(updatedList, fileAll);
-                    writeFileArray(completedList, fileAll);
                 }
 
             }
