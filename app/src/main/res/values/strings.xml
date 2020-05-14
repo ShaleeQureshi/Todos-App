@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Todo App</string>
+    <string name="add_todo">Add Todo</string>
+    <string name="delete_todo">Delete Todo</string>
+    <string name="view_todos">View Todos</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="https_github_com_shaleequreshi">https://github.com/ShaleeQureshi</string>
+    <string name="home">Home</string>
+    <string name="developed_by_shahrukh_qureshi">Developed by Shahrukh Qureshi</string>
+    <string name="enter_the_todo_you_wish_to_delete">Enter the Todo you wish to delete</string>
+    <string name="remove">Remove</string>
+    <string name="clear_list">Clear List</string>
+    <string name="todo">TODO</string>
+    <string name="select_the_todo_you_wish_to_delete">Select the Todo you wish to delete</string>
+
+</resources>
