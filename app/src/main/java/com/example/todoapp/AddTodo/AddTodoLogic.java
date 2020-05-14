@@ -49,7 +49,6 @@ class AddTodoLogic {
 
         //ArrayAdapter returns a view for each collection of data in the list
         final ArrayAdapter<String> listAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice, list);
-        final ArrayAdapter<String> newList = new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice, updatedList);
         //Adding the adapter to the list
         listView.setAdapter(listAdapter);
 
@@ -139,7 +138,6 @@ class AddTodoLogic {
 
             }
         });
-
 
 
     }//Constructor
