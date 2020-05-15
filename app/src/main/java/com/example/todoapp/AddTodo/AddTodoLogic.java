@@ -53,7 +53,6 @@ class AddTodoLogic {
         }
 
 
-
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -84,22 +83,19 @@ class AddTodoLogic {
             public void onClick(View v) {
 
 
-                SparseBooleanArray checkedItemsCheck = listView.getCheckedItemPositions();
-
-                if (checkedItemsCheck.size() == 0) {
+                if (listView.getCheckedItemPositions().size() == 0) {
                     alert.show();
                 } else {
 
-                    SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
 
-                    for (int i = 0; i < listView.getCount(); i++) {
-                        if (checkedItems.get(i)) {
-                            writeFile(list.get(i) + " - Completed", fileAll, true);
-                            list.remove(list.get(i));
+
+                        for (int i = 0; i < listView.getCount(); i++) {
+                            if (listView.getCheckedItemPositions().get(i)) {
+                                listAdapter.remove(listAdapter.getItem(i));
+                            }
                         }
+                        listView.getCheckedItemPositions().clear();
 
-
-                    }
 
                     listAdapter.notifyDataSetChanged();
                     Toast toast = Toast.makeText(context, "Item(s) deleted successfully!", Toast.LENGTH_SHORT);
