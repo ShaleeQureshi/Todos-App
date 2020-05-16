@@ -92,8 +92,6 @@ class AddTodoLogic {
                  listView.getCheckedItemPositions().clear(); //Ensuring no other items are checked by clearing all checked positions
                  Toast toast = Toast.makeText(context, todo + "\nmarked as Completed!", Toast.LENGTH_SHORT);
 
-
-//                 writeFile(todo + " - Completed", fileAll, true); //Writing to the file containing all of the todos
                  writeFile(todo + " - Completed", fileCompleted, true);
                  writeFileArray(list, fileTodos, false); //Writing to the todos file with the updated list
 
