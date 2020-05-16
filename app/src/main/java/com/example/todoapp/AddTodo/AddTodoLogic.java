@@ -1,21 +1,19 @@
 package com.example.todoapp.AddTodo;
 
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import static com.example.todoapp.Methods.FileAccess.*;
+import static com.example.todoapp.Methods.FileAccess.readFile;
+import static com.example.todoapp.Methods.FileAccess.writeFile;
 
 /*
 Author: Shahrukh Qureshi
@@ -26,7 +24,7 @@ Description: This class creates the Todos and puts them onto a list starting at 
 class AddTodoLogic {
 
     //Constructor
-    AddTodoLogic(Button addButton, FloatingActionButton btnDelete, final EditText textValue, final ListView listView, final Context context, final int year, final int month, final int day, final int hour, final int minute) {
+    AddTodoLogic(Button addButton, final EditText textValue, final ListView listView, final Context context) {
 
         final File fileAll = new File(context.getFilesDir(), "alltodos.txt"); //File path to internal storage
         final File fileTodos = new File(context.getFilesDir(), "todo.txt");
@@ -40,85 +38,58 @@ class AddTodoLogic {
         //Adding the adapter to the list
         listView.setAdapter(listAdapter);
 
-        //Alert Box
-        final AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setMessage("Please add a Todo\n\nFor Example:\n\nWalk the dog\nGo for a run\nCode a Todos App");
-        alert.setPositiveButton("OK", null);
-
         //If the file exists it means the user has used the app before so we will get the todos from before and display them
         if (fileTodos.exists()) {
-            data = readFile(data, fileTodos);
-            assert data != null;
-            list.addAll(data);
+            data = readFile(data, fileTodos); //Reading from the todos file
+            assert data != null; //Ensureing the data is not null
+            list.addAll(data); //Adding all of the previous todos to the list
         }
 
-
+        //When the user presses the addButton the following will occur
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
+                //Checking to see if the user entered a valid todo
                 if (textValue.getText().length() == 0 || (textValue.getText().toString().replaceAll(" ", "")).equals("")) {
-                    alert.show();
-                    textValue.setText("");
+
+                    //Alert Box
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setMessage("Please add a Todo\n\nFor Example:\n\nWalk the dog\nGo for a run\nCode a Todos App");
+                    alert.setPositiveButton("OK", null);
+                    alert.show(); //If they did not then this alert will show
+
+                    textValue.setText(""); //Resetting their entry
+
                 } else {
 
-                    String output = textValue.getText().toString() + "     For: " + year + "-" + month + "-" + day + " AT " + hour + ":" + minute;
+                    String output = textValue.getText().toString(); //The output to the files/user
 
+                    writeFile(output, fileTodos, true); //Writing to the todos file
+                    writeFile(output, fileAll, true); //Writing to the file containing all of the todos
 
-                    writeFile(output, fileTodos, true);
-                    writeFile(output, fileAll, true);
+                    list.add(output); //Adding the todo to the list which will display it
+                    listAdapter.notifyDataSetChanged(); //Notifying the list adapter that a change has been made
 
-                    list.add(output);
-                    listAdapter.notifyDataSetChanged();
-
-                    textValue.setText("");
+                    textValue.setText(""); //Resetting the text field to nothing so the user can enter a new one
                 }
 
             }//onClick Method
         }); //OnClickListener Method
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if (listView.getCheckedItemPositions().size() == 0) {
-                    alert.show();
-                } else {
-
-
-
-                        for (int i = 0; i < listView.getCount(); i++) {
-                            if (listView.getCheckedItemPositions().get(i)) {
-                                listAdapter.remove(listAdapter.getItem(i));
-                            }
-                        }
-                        listView.getCheckedItemPositions().clear();
-
-
-                    listAdapter.notifyDataSetChanged();
-                    Toast toast = Toast.makeText(context, "Item(s) deleted successfully!", Toast.LENGTH_SHORT);
-                    toast.show();
-
-                }
-
-            }
-        });
+        //The following will occur when the user presses the box beside each list value
+         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+             @Override
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 list.remove(position); //Removing it
+                 listAdapter.notifyDataSetChanged(); //Notifying the list adapter that a change has been made
+                 listView.getCheckedItemPositions().clear(); //Ensuring no other items are checked by clearing all checked positions
+             }
+         });
 
 
     }//Constructor
 
-    public static String dateFormat(int year, int month, int day) {
-        return year + "-" + month + "-" + day;
-    }
-
-    public static String timeFormat(int hour, int minute) {
-        if (hour >= 12) {
-            return hour + ":" + minute + "PM";
-        } else {
-            return hour + ":" + minute + "AM";
-        }
-    }
 
 }//class AddTodo

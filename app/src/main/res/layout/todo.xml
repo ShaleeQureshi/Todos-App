@@ -20,18 +20,11 @@
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/delete"
+        android:src="@drawable/date"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/deleteBtn"/>
+        android:id="@+id/dateBtn"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/dateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/deleteBtn"
-        android:src="@drawable/date"
-        android:layout_toStartOf="@id/deleteBtn" />
 
 
 
