@@ -5,16 +5,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.todoapp.Methods.FileAccess;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.todoapp.Methods.FileAccess;
-
 class ViewAllLogic {
 
-    ViewAllLogic(Button clearBtn, ListView listView, Context context) {
+    ViewAllLogic(Button clearBtn, ListView listView, final Context context) {
 
 
         final File fileAll = new File(context.getFilesDir(), "alltodos.txt");
@@ -47,6 +48,9 @@ class ViewAllLogic {
                 FileAccess.writeFile("Close", fileRemove, false);
 
                 arrayAdapter.clear();
+                arrayAdapter.notifyDataSetChanged();
+                Toast toast = Toast.makeText(context, "List cleared Successfully!", Toast.LENGTH_SHORT);
+                toast.show();
 
             }
         });

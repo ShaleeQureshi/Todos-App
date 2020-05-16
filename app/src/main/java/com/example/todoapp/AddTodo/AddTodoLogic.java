@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -82,9 +83,12 @@ class AddTodoLogic {
          listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 String todo = list.get(position);
                  list.remove(position); //Removing it
                  listAdapter.notifyDataSetChanged(); //Notifying the list adapter that a change has been made
                  listView.getCheckedItemPositions().clear(); //Ensuring no other items are checked by clearing all checked positions
+                 Toast toast = Toast.makeText(context, todo + "\nmarked as Completed!", Toast.LENGTH_SHORT);
+                 toast.show();
              }
          });
 

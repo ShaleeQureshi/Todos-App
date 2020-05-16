@@ -26,7 +26,7 @@ public class TodoFragment extends Fragment {
         Button btnAdd = view.findViewById(R.id.addBtn);
         FloatingActionButton btnDate = view.findViewById(R.id.dateBtn);
         EditText editText = view.findViewById(R.id.editText);
-        ListView listView = view.findViewById(R.id.listView);
+        ListView listView = view.findViewById(R.id.view);
 
 
 
