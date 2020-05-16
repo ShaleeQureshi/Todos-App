@@ -17,35 +17,40 @@ class ViewAllLogic {
 
     ViewAllLogic(Button clearBtn, ListView listView, final Context context) {
 
-
-        final File fileAll = new File(context.getFilesDir(), "alltodos.txt");
+        final File fileCompleted = new File(context.getFilesDir(), "completedtodos.txt");
         final File fileTodos = new File(context.getFilesDir(), "todo.txt");
-        final File fileRemove = new File(context.getFilesDir(), "removetodos.txt");
 
 
         final List<String> list = new ArrayList<>();
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, list);
 
-        ArrayList<String> listAll = new ArrayList<>();
+        ArrayList<String> listTodos = new ArrayList<>();
+        ArrayList<String> listCompleted = new ArrayList<>();
+
 
         listView.setAdapter(arrayAdapter);
 
-        if (fileAll.exists()) {
-            listAll = FileAccess.readFile(listAll, fileAll);
+        if (fileTodos.exists()) {
+            listTodos = FileAccess.readFile(listTodos, fileTodos);
 
-            if (listAll != null) {
-                list.addAll(listAll);
-            }
+            assert listTodos != null;
+            list.addAll(listTodos);
+        }
+        if (fileCompleted.exists()) {
+            listCompleted = FileAccess.readFile(listCompleted, fileCompleted);
+
+            assert listCompleted != null;
+            list.addAll(listCompleted);
+
         }
 
         clearBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                FileAccess.writeFile("Close", fileAll, false);
+                FileAccess.writeFile("Close", fileCompleted, false);
                 FileAccess.writeFile("Close", fileTodos, false);
-                FileAccess.writeFile("Close", fileRemove, false);
 
                 arrayAdapter.clear();
                 arrayAdapter.notifyDataSetChanged();

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import static com.example.todoapp.Methods.FileAccess.readFile;
 import static com.example.todoapp.Methods.FileAccess.writeFile;
+import static com.example.todoapp.Methods.FileAccess.writeFileArray;
 
 /*
 Author: Shahrukh Qureshi
@@ -28,6 +29,7 @@ class AddTodoLogic {
     AddTodoLogic(Button addButton, final EditText textValue, final ListView listView, final Context context) {
 
         final File fileAll = new File(context.getFilesDir(), "alltodos.txt"); //File path to internal storage
+        final File fileCompleted = new File (context.getFilesDir(), "completedtodos.txt");
         final File fileTodos = new File(context.getFilesDir(), "todo.txt");
 
         final ArrayList<String> list = new ArrayList<>(); //ArrayList for the list of Todos
@@ -68,7 +70,7 @@ class AddTodoLogic {
                     String output = textValue.getText().toString(); //The output to the files/user
 
                     writeFile(output, fileTodos, true); //Writing to the todos file
-                    writeFile(output, fileAll, true); //Writing to the file containing all of the todos
+//                    writeFile(output, fileAll, true); //Writing to the file containing all of the todos
 
                     list.add(output); //Adding the todo to the list which will display it
                     listAdapter.notifyDataSetChanged(); //Notifying the list adapter that a change has been made
@@ -84,10 +86,18 @@ class AddTodoLogic {
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  String todo = list.get(position);
+
                  list.remove(position); //Removing it
                  listAdapter.notifyDataSetChanged(); //Notifying the list adapter that a change has been made
                  listView.getCheckedItemPositions().clear(); //Ensuring no other items are checked by clearing all checked positions
                  Toast toast = Toast.makeText(context, todo + "\nmarked as Completed!", Toast.LENGTH_SHORT);
+
+
+//                 writeFile(todo + " - Completed", fileAll, true); //Writing to the file containing all of the todos
+                 writeFile(todo + " - Completed", fileCompleted, true);
+                 writeFileArray(list, fileTodos, false); //Writing to the todos file with the updated list
+
+
                  toast.show();
              }
          });
