@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
 
     <EditText
@@ -21,9 +22,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/date"
+        android:id="@+id/dateBtn"
+        android:layout_toLeftOf="@id/timeBtn"
+        android:layout_toStartOf="@id/timeBtn" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/time"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/dateBtn"/>
+        android:id="@+id/timeBtn"/>
 
 
     <Button

@@ -30,29 +30,6 @@ public class FileAccess {
         return null;
     }
 
-//    public static ArrayList<String> deleteItem(ArrayList<String> data, String keyWord, File file) {
-//
-//        try {
-//
-//            FileReader fileReader = new FileReader(file);
-//            BufferedReader read = new BufferedReader(fileReader);
-//
-//            FileWriter fileW = new FileWriter(file);
-//            PrintWriter output = new PrintWriter(fileW);
-//
-//            String line = "";
-//            while ((line = read.readLine()) != null){
-//                if (!line.equals(keyWord)){
-//                    output.println(line);
-//                }
-//            }
-//
-//        } catch (Exception error) {
-//            error.printStackTrace();
-//        }
-//
-//    }
-
     public static void writeFile(String data, File file, boolean append) {
 
         try {

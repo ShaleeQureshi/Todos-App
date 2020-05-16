@@ -79,7 +79,7 @@ class ViewAllLogic {
                 writeFile("Close", fileTodos, false);
 
                 for (int i = 0; i < list.size(); i++){
-                    if (list.get(i).contains(" - Completed")){
+                    if (!list.get(i).startsWith(" - Completed") && list.get(i).contains(" - Completed")){
                         writeFile(list.get(i), fileCompleted, true);
                     }else {
                         writeFile(list.get(i), fileTodos, true);

@@ -14,6 +14,8 @@ import android.widget.ListView;
 
 import com.example.todoapp.R;
 
+import java.io.IOException;
+
 
 public class TodoFragment extends Fragment {
 
@@ -25,13 +27,13 @@ public class TodoFragment extends Fragment {
 
         Button btnAdd = view.findViewById(R.id.addBtn);
         FloatingActionButton btnDate = view.findViewById(R.id.dateBtn);
+        FloatingActionButton btnTime = view.findViewById(R.id.timeBtn);
         EditText editText = view.findViewById(R.id.editText);
         ListView listView = view.findViewById(R.id.view);
 
 
+        AddTodoLogic addtodo = new AddTodoLogic(btnAdd, btnDate, btnTime, editText, listView, getContext());
 
-
-        AddTodoLogic addtodo = new AddTodoLogic(btnAdd, btnDate, editText, listView, getContext());
 
         return view;
     }
