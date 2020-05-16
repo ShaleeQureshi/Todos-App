@@ -1,17 +1,26 @@
 package com.example.todoapp.AddTodo;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.todoapp.Methods.Dialogs;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.example.todoapp.Methods.FileAccess.readFile;
 import static com.example.todoapp.Methods.FileAccess.writeFile;
@@ -23,10 +32,13 @@ Date: May 10, 2020
 Description: This class creates the Todos and puts them onto a list starting at the most recent
 */
 
-class AddTodoLogic {
+
+class AddTodoLogic{
+
+    static String date;
 
     //Constructor
-    AddTodoLogic(Button addButton, final EditText textValue, final ListView listView, final Context context) {
+    AddTodoLogic(Button addButton, FloatingActionButton btnDate, final EditText textValue, final ListView listView, final Context context) {
 
         final File fileAll = new File(context.getFilesDir(), "alltodos.txt"); //File path to internal storage
         final File fileCompleted = new File (context.getFilesDir(), "completedtodos.txt");
@@ -35,6 +47,13 @@ class AddTodoLogic {
         final ArrayList<String> list = new ArrayList<>(); //ArrayList for the list of Todos
 
         ArrayList<String> data = new ArrayList<>(); //ArrayList for previously added data
+
+        final DatePickerDialog.OnDateSetListener setListener;
+        final Calendar calendar = Calendar.getInstance();
+
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
         //ArrayAdapter returns a view for each collection of data in the list
         final ArrayAdapter<String> listAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice, list);
@@ -47,6 +66,26 @@ class AddTodoLogic {
             assert data != null; //Ensureing the data is not null
             list.addAll(data); //Adding all of the previous todos to the list
         }
+
+        //Initializing setListener
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                month = month + 1; //Adding 1 to the month
+                date = day + "/" + month + "/" + year; //Formatting the date
+
+            }
+        };
+
+        //If the user wants to add a date to their todo the following will occur
+        btnDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context, setListener, year, month, dayOfMonth);
+                datePickerDialog.show(); //Showing the datePicker dialog
+            }
+        });
+
 
         //When the user presses the addButton the following will occur
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +102,7 @@ class AddTodoLogic {
                     alert.setPositiveButton("OK", null);
                     alert.show(); //If they did not then this alert will show
 
-                    textValue.setText(""); //Resetting their entry
+                    textValue.setText(date); //Resetting their entry
 
                 } else {
 
@@ -80,6 +119,7 @@ class AddTodoLogic {
 
             }//onClick Method
         }); //OnClickListener Method
+
 
         //The following will occur when the user presses the box beside each list value
          listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -102,6 +142,5 @@ class AddTodoLogic {
 
 
     }//Constructor
-
 
 }//class AddTodo

@@ -31,7 +31,7 @@ public class TodoFragment extends Fragment {
 
 
 
-        AddTodoLogic addtodo = new AddTodoLogic(btnAdd, editText, listView, getContext());
+        AddTodoLogic addtodo = new AddTodoLogic(btnAdd, btnDate, editText, listView, getContext());
 
         return view;
     }
