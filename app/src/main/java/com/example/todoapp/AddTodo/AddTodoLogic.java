@@ -103,15 +103,15 @@ class AddTodoLogic {
                         output = textValue.getText().toString();
                         fileOutput = textValue.getText().toString();
                     } else if (Dialogs.dateVal == null && Dialogs.timeVal != null) {
-                        output = textValue.getText().toString() + "\nTo be completed by: " + Dialogs.timeVal;
-                        fileOutput = textValue.getText().toString() + "To be completed by: " + Dialogs.timeVal;
+                        output = textValue.getText().toString() + "\n" + Dialogs.timeVal;
+                        fileOutput = textValue.getText().toString() + " - " + Dialogs.timeVal;
                     } else if (Dialogs.dateVal != null && Dialogs.timeVal == null) {
-                        output = textValue.getText().toString() + "\nTo be completed by: " + Dialogs.dateVal;
-                        fileOutput = textValue.getText().toString() + "To be completed by: " + Dialogs.dateVal;
+                        output = textValue.getText().toString() + "\n" + Dialogs.dateVal;
+                        fileOutput = textValue.getText().toString() + " - " + Dialogs.dateVal;
 
                     } else {
-                        output = textValue.getText().toString() + "\nTo be completed by: " + Dialogs.dateVal + ", " + Dialogs.timeVal;
-                        fileOutput = textValue.getText().toString() + "To be completed by: " + Dialogs.dateVal + ", " + Dialogs.timeVal;
+                        output = textValue.getText().toString() + "\n" + Dialogs.dateVal + ", " + Dialogs.timeVal;
+                        fileOutput = textValue.getText().toString() + " - " + Dialogs.dateVal + ", " + Dialogs.timeVal;
 
                     }
 
